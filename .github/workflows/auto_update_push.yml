@@ -17,11 +17,6 @@ jobs:
       - name: Replace equals sign
         run: sed -e "s|=| |g" bogus-nxdomain.china.conf > bogus-nxdomain.china.smartdns.conf
 
-      - name: Configure Git
-        run: |
-          git config --global user.email "13.y@live.com"
-          git config --global user.name "dns"
-
       - name: Add and commit changes
         run: |
           git add bogus-nxdomain.china.smartdns.conf
