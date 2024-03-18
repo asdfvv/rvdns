@@ -1,0 +1,29 @@
+name: Download and Replace
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download file
+        run: |
+          wget https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/bogus-nxdomain.china.conf -O bogus-nxdomain.china.conf
+
+      - name: Replace equals sign
+        run: sed -e "s|=| |g" bogus-nxdomain.china.conf > bogus-nxdomain.china.smartdns.conf
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "13.y@live.com"
+          git config --global user.name "GitHub Actions"
+          git add bogus-nxdomain.china.smartdns.conf
+          git commit -m "Auto update: Replace equals sign"
+          git push
