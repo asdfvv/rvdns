@@ -31,3 +31,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.REPO_TOKEN}}
+          branch: main  # 要推送的分支名称
+          repository: asdfvv/rvdns  # 要推送的目标仓库，例如 "username/repo"
