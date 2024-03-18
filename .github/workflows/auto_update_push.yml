@@ -20,7 +20,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.email "13.y@live.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "dns"
 
       - name: Add and commit changes
         run: |
