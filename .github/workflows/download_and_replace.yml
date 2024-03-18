@@ -1,9 +1,8 @@
-name: Download and Replace
+name: Auto Update and Push
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 时间 00:00 执行一次
 
 jobs:
   build:
@@ -14,16 +13,22 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download file
-        run: |
-          wget https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/bogus-nxdomain.china.conf -O bogus-nxdomain.china.conf
+        run: wget https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/bogus-nxdomain.china.conf -O bogus-nxdomain.china.conf
 
       - name: Replace equals sign
         run: sed -e "s|=| |g" bogus-nxdomain.china.conf > bogus-nxdomain.china.smartdns.conf
 
-      - name: Commit and push changes
+      - name: Configure Git
         run: |
-          git config --global user.email "13.y@live.com"
+          git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+
+      - name: Add and commit changes
+        run: |
           git add bogus-nxdomain.china.smartdns.conf
           git commit -m "Auto update: Replace equals sign"
-          git push
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
